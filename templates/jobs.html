@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Index{% endblock %}
+{% block content %}
+<table>
+  <tr>
+    <th>Job ID</th>
+    <th>Status</th>
+    <th>Name</th>
+    <th>Created</th>
+  </tr>
+  {% for job in jobs %}
+  <tr>
+    <td><a href="{{ url_for('show_job', id=job['jobId']) }}">{{ job['jobId'] }}</a></td>
+    <td>{{ job['status'] }}</td>
+    <td>{{ job['jobName'] }}</td>
+    <td>{{ job['startedAt'] }}</td>
+  </tr>
+  {% endfor %}
+{% endblock %}

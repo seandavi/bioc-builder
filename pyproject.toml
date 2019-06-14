@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "bioc-builder"
+version = "0.1.0"
+description = ""
+authors = ["Sean Davis <seandavi@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.7"
+starlette = "^0.12.0"
+fastapi = "^0.29.1"
+psycopg2 = "^2.8"
+boto3 = "^1.9"
+sqlalchemy = "^1.3"
+uvicorn = "^0.7.2"
+databases = "^0.2.2"
+asyncpg = "^0.18.3"
+jinja2 = "^2.10"
+aiofiles = "^0.4.0"
+
+[tool.poetry.dev-dependencies]
+pytest = "^3.0"
+ipython = "^7.5"
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
