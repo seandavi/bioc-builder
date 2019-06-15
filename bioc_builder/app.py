@@ -1,6 +1,8 @@
 import databases
 import sqlalchemy
+from fastapi import FastAPI
 from starlette.applications import Starlette
+from starlette.middleware.cors import CORSMiddleware
 from starlette.config import Config
 from starlette.responses import JSONResponse
 from starlette.staticfiles import StaticFiles
@@ -25,7 +27,19 @@ bioc_build_dir = BiocBuildDirectory(bucket = BUCKET, prefix = PREFIX)
 
 DEBUG = config('DEBUG', cast=bool, default=True)
 
-app = Starlette()
+app = FastAPI()
+
+# CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=['*'],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
+
 app.debug = DEBUG
 app.mount('/static', StaticFiles(directory='static'), name='static')
 
@@ -43,7 +57,7 @@ async def shutdown():
 
 @app.route("/jobs", methods=["GET"])
 async def list_jobs(request):
-    client = BatchClient()
+    client=BatchClient(jobQueue=JOB_QUEUE)
     res = client.list_jobs(jobQueue=JOB_QUEUE)
     print(res)
     return templates.TemplateResponse('jobs.html', {'request': request, 'jobs':res})
@@ -52,8 +66,31 @@ async def list_jobs(request):
 async def homepage(request):
     return templates.TemplateResponse('base.html', {'request': request})
 
+@app.route('/form')
+async def submit_job(request):
+    if('pkg_repo' not in request.query_params):
+        return templates.TemplateResponse('submit.html', {'request': request})
+    pkg_repo = request.query_params['pkg_repo']
+    wb_repo = "https://github.com/Bioconductor/BiocWorkshops2019"
+    wb_local = "bioc_2019"
+    client=BatchClient(jobQueue=JOB_QUEUE)
+    id = client.submit_job(jobName = 'bioc_build_' + pkg_repo[0:5],
+                           jobDefinition = "bioc_builder",
+                           parameters = {"book_repo": wb_repo,
+                                         "book_path": wb_local,
+                                         "pkg_repo":pkg_repo})
+    return JSONResponse({"ID":id})
+
 @app.route('/job/{id:str}')
 async def show_job(request):
     id = username = request.path_params['id']
     files = bioc_build_dir.get_all_files(id)
     return templates.TemplateResponse('job.html', {'request': request, "files":files})
+
+
+@app.route('/job_list')
+async def job_list(request):
+    client=BatchClient(jobQueue=JOB_QUEUE)
+    res = client.list_jobs(jobQueue=JOB_QUEUE)
+    print(res)
+    return JSONResponse(res)

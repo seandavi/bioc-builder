@@ -10,9 +10,9 @@ JOB_STATUS=("SUBMITTED",
            "FAILED")
 
 class BatchClient(object):
-    def __init__(self):
+    def __init__(self, jobQueue):
         self.client = boto3.client('batch')
-
+        self.jobQueue = jobQueue
 
     def get_client(self):
         return self.client
@@ -39,14 +39,15 @@ class BatchClient(object):
         return self.describe_jobs([job])
 
 
-    def submit_job(self, jobName: str, jobQueue: str,
+    def submit_job(self, jobName: str,
                    jobDefinition: str, **kwargs):
         
-        return batch.submit_job(
+        return self.client.submit_job(
             jobName=jobName,
-            jobQueue=jobQueue,
+            jobQueue=self.jobQueue,
             jobDefinition=jobDefinition,
-            **kwargs)
+            **kwargs)['jobId']
 
     def describe_job_definitions(self, **kwargs):
         return self.client.describe_job_definitions(**kwargs)
+
