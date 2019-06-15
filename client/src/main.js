@@ -3,6 +3,7 @@ import App from './App.vue';
 import router from './router';
 
 // Material design https://github.com/vuematerial/vue-material
+import VueMaterial from 'vue-material'
 import { MdButton,
 	 MdContent,
 	 MdTabs,
@@ -10,7 +11,9 @@ import { MdButton,
 	 MdLayout
        } from 'vue-material/dist/components'
 import 'vue-material/dist/vue-material.min.css'
+import 'vue-material/dist/theme/default-dark.css'
 
+Vue.use(VueMaterial)
 
 Vue.use(MdButton)
 Vue.use(MdContent)

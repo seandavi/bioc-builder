@@ -4,9 +4,11 @@ from fastapi import FastAPI
 from starlette.applications import Starlette
 from starlette.middleware.cors import CORSMiddleware
 from starlette.config import Config
-from starlette.responses import JSONResponse
+from starlette.responses import JSONResponse, PlainTextResponse
 from starlette.staticfiles import StaticFiles
 from starlette.templating import Jinja2Templates
+
+import logging
 
 from .aws_batch_utils import BatchClient
 from .aws_s3_utils import BiocBuildDirectory
@@ -55,6 +57,12 @@ async def startup():
 async def shutdown():
     await database.disconnect()
 
+@app.route('/post_test', methods=["GET", "POST"])
+async def post_test(request):
+    json = await request.json()
+    logging.info("creating new job: "+str(json))
+    return JSONResponse(json)
+    
 @app.route("/jobs", methods=["GET"])
 async def list_jobs(request):
     client=BatchClient(jobQueue=JOB_QUEUE)
