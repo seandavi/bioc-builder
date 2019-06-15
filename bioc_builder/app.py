@@ -85,12 +85,11 @@ async def submit_job(request):
 async def show_job(request):
     id = username = request.path_params['id']
     files = bioc_build_dir.get_all_files(id)
-    return templates.TemplateResponse('job.html', {'request': request, "files":files})
+    return JSONResponse(files)
 
 
 @app.route('/job_list')
 async def job_list(request):
     client=BatchClient(jobQueue=JOB_QUEUE)
     res = client.list_jobs(jobQueue=JOB_QUEUE)
-    print(res)
     return JSONResponse(res)

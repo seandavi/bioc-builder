@@ -5,6 +5,8 @@ import router from './router';
 // Material design https://github.com/vuematerial/vue-material
 import { MdButton, MdContent, MdTabs, MdTable} from 'vue-material/dist/components'
 import 'vue-material/dist/vue-material.min.css'
+import 'vue-material/dist/theme/default-dark.css' // This line here
+
 
 Vue.use(MdButton)
 Vue.use(MdContent)
