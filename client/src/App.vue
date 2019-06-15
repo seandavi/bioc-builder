@@ -1,17 +1,15 @@
 <template>
-  <div id="app">
+<div id="app" class="md-layout">
+  <div class="md-layout-item">
     <router-view/>
   </div>
+</div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
 
 export default {
   name: 'app',
-  components: {
-      HelloWorld
-  }
 }
 </script>
 
@@ -21,7 +19,6 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: left;
-  color: #2c3e50;
   margin-top: 60px;
 }
 </style>

@@ -1,5 +1,25 @@
 # client
 
+## Coding
+
+### Add a route/component
+
+- Add component to src/components using `Vue` style, such as `Job.vue`
+- Register component in `src/router.js`
+    ```
+    import Job from './components/Job.vue';
+	```
+- Add route:
+   ```
+     routes: [
+	 ...,
+    {
+      path: '/job/:id?',
+      name: 'Job',
+      component: Job,
+    }
+	],
+	```
 ## Project setup
 ```
 npm install
