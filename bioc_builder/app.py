@@ -62,7 +62,8 @@ async def post_test(request):
     json = await request.json()
     logging.info("creating new job: "+str(json))
     return JSONResponse(json)
-    
+
+
 @app.route("/jobs", methods=["GET"])
 async def list_jobs(request):
     client=BatchClient(jobQueue=JOB_QUEUE)
@@ -74,11 +75,12 @@ async def list_jobs(request):
 async def homepage(request):
     return templates.TemplateResponse('base.html', {'request': request})
 
-@app.route('/form')
+@app.route('/new_job', methods=["GET", "POST"])
 async def submit_job(request):
-    if('pkg_repo' not in request.query_params):
-        return templates.TemplateResponse('submit.html', {'request': request})
-    pkg_repo = request.query_params['pkg_repo']
+    json = await request.json()
+    if('pkg_repo' not in json):
+        return JSONResponse({})
+    pkg_repo = json['pkg_repo']
     wb_repo = "https://github.com/Bioconductor/BiocWorkshops2019"
     wb_local = "bioc_2019"
     client=BatchClient(jobQueue=JOB_QUEUE)
