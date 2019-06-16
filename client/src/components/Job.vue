@@ -1,8 +1,9 @@
 <template>
-  <div>
+<div>
+    <h3 class="md-title" style="flex: 1">Results for Job: {{ id }}</h3>
     <ul id="job-files">
-      <li v-for="f in files">
-	<a v-bind:href="f.url">{{ f.name }}</a>
+      <li v-for="f in files" v-bind:key="type">
+	<a v-bind:href="f.url" target="_blank">{{ f.name }}</a>
       </li>
     </ul>
   </div>

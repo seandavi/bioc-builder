@@ -1,7 +1,7 @@
 <template>
 <div id="app" class="md-layout">
   <md-toolbar>
-    <h3 class="md-title" style="flex: 1">Title</h3>
+    <h3 class="md-title" style="flex: 1">Bioconductor Workshop Builder</h3>
     <md-menu md-direction="top-start">
       <md-button md-menu-trigger class="md-icon-button">
 	<md-icon>more_vert</md-icon>      
